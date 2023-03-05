@@ -1,4 +1,5 @@
 import mysql.connector as sqlcon
+import getpass
 
 conexao = sqlcon.connect(
     host='localhost',
@@ -9,14 +10,15 @@ conexao = sqlcon.connect(
 
 try:
     name= input("Enter username:")
-    passw= input("Enter password:")
+    passw= getpass.getpass(prompt="Enter password:")
     validate = conexao.cursor()
-    comando=f"select user.userid from bdinfosecurity.user where user.username = '{name}' and user.userpassword = '{passw}'"
-    print(comando)
+    comando=f"select user.userid from bdinfosecurity.user where user.username = '{name}' and user.userpassword = '{passw}' and user.userrole='admin'"
+
     validate.execute(comando)
-    idsession=validate.fetchone()
-    print("ID DA SESSÃO")
-    print(idsession)
+    queryresult=validate.fetchone()
+    for row in queryresult:
+        idsession=row
+
     if idsession != None:
         validation = "ok"
         print("login concluido")
@@ -38,9 +40,7 @@ if(validation=="ok"):
     cursor.close()
 
     log = conexao.cursor()
-    comando=f"insert into bdinfosecurity.accesslog (iduseracces, context) values ('{idsession}', 'combrança por email')"
-    print("print")
-    print(comando)
+    comando=f"insert into bdinfosecurity.accesslog (iduseracces, context) values ('{idsession}', 'cobrança por email')"
     log.execute(comando)
     conexao.commit()
     log.close()

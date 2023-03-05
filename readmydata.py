@@ -31,14 +31,8 @@ except:
 
 if(validation=="ok"):
     cursor = conexao.cursor()
-    name= input("Enter new username:")
-    mail= input("Enter new email:")
-    comando=f"update bdinfosecurity.user set username = '{name}', usermail = '{mail}' where userid = {idsession}"
+    comando=f"select * from bdinfosecurity.user where user.userid = {idsession}"
     cursor.execute(comando)
-    conexao.commit()
     resultado=cursor.fetchall()
+    print(resultado)
     cursor.close()
-    conexao.close()
-
-
-

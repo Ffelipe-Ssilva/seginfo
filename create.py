@@ -1,4 +1,6 @@
 import mysql.connector as sqlcon
+import getpass
+
 
 conexao = sqlcon.connect(
     host='localhost',
@@ -9,7 +11,7 @@ conexao = sqlcon.connect(
 cursor = conexao.cursor()
 name= input("Enter username:")
 mail= input("Enter email:")
-passw= input("Enter password:")
+passw= getpass.getpass(prompt="Enter password:")
 consent= input("By typing OK button, you are creating an account, and agree to Terms of Service and Privacy Policy:")
 
 while consent !="OK":
@@ -19,7 +21,7 @@ while consent !="OK":
         print("essa é a politica de privacidade")
     consent= input("By typing OK button, you are creating an account, and agree to Terms of Service and Privacy Policy:")
 if consent == "OK":
-    comando=f"insert into bdinfosecurity.user (username, usermail, userpassword) values ('{name}', '{mail}', '{passw}')"
+    comando=f"insert into bdinfosecurity.user (username, usermail, userpassword, userrole) values ('{name}', '{mail}', '{passw}', 'user')"
     print("print")
     print(comando)
     cursor.execute(comando)

@@ -1,8 +1,10 @@
-ver meus dados
-mudar meus dados
+#ver meus dados
+#mudar meus dados
 ver quem acessou meus dados
-trazer apenas o necessario para as operacoes
+#trazer apenas o necessario para as operacoes
 perguntar pro usuario se pode usar dados pra mostrar propaganda
-permitir certas ações serem executadas apenas por admins
-censurar senha
+#permitir certas ações serem executadas apenas por admins
+#censurar senha
 adicionar descrição apropriada dos termos e privacidade
+só deletar usuario se ele existir
+LIMPAR O CODIGO
