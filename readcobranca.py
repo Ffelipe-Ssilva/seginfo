@@ -40,7 +40,7 @@ if(validation=="ok"):
     cursor.close()
 
     log = conexao.cursor()
-    comando=f"insert into bdinfosecurity.accesslog (iduseracces, context) values ('{idsession}', 'cobrança por email')"
+    comando=f"insert into bdinfosecurity.accesslog (iduseracces, context) values ({idsession}, 'cobrança por email')"
     log.execute(comando)
     conexao.commit()
     log.close()

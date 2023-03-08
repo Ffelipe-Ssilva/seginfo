@@ -8,3 +8,4 @@ perguntar pro usuario se pode usar dados pra mostrar propaganda
 adicionar descrição apropriada dos termos e privacidade
 só deletar usuario se ele existir
 LIMPAR O CODIGO
+descobrir se é possivel restaurar dados deletados e impedir isso

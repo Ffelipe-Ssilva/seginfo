@@ -22,11 +22,9 @@ while consent !="OK":
     consent= input("By typing OK button, you are creating an account, and agree to Terms of Service and Privacy Policy:")
 if consent == "OK":
     comando=f"insert into bdinfosecurity.user (username, usermail, userpassword, userrole) values ('{name}', '{mail}', '{passw}', 'user')"
-    print("print")
-    print(comando)
+
     cursor.execute(comando)
     conexao.commit()
     resultado=cursor.fetchall()
-    print(resultado)
     cursor.close()
     conexao.close()
