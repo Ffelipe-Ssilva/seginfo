@@ -1,4 +1,4 @@
-import mysql.connector
+import mysql.connector as sqlcon
 from pymongo import MongoClient
 
 # Conectar ao banco de dados MySQL
@@ -16,8 +16,8 @@ mongo_collection = mongo_db['usuarios']
 
 
 # Recuperar os dados do MySQL
-mysql_cursor = mysql_conn.cursor()
-mysql_cursor.execute('SELECT * FROM tabela')
+mysql_cursor = conexao.cursor()
+mysql_cursor.execute('SELECT * FROM bdinfosecurity.user')
 mysql_data = mysql_cursor.fetchall()
 
 # Inserir os dados do MySQL no MongoDB

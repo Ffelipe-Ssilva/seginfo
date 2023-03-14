@@ -21,10 +21,17 @@ while consent !="OK":
         print("essa é a politica de privacidade")
     consent= input("By typing OK button, you are creating an account, and agree to Terms of Service and Privacy Policy:")
 if consent == "OK":
-    comando=f"insert into bdinfosecurity.user (username, usermail, userpassword, userrole) values ('{name}', '{mail}', '{passw}', 'user')"
+    while ads !="sim" or ads !="não":
+        if ads=="sim":
+            print("seus anuncios serão customizado de acordo com seus gostos")
+        elif ads=="não":
+            print("seus anuncios serão gerados aleatoriamente")
+        ads= input("")
+if consent == "OK":
+        comando=f"insert into bdinfosecurity.user (username, usermail, userpassword, userrole) values ('{name}', '{mail}', '{passw}', 'user')"
 
-    cursor.execute(comando)
-    conexao.commit()
-    resultado=cursor.fetchall()
-    cursor.close()
-    conexao.close()
+        cursor.execute(comando)
+        conexao.commit()
+        resultado=cursor.fetchall()
+        cursor.close()
+        conexao.close()
