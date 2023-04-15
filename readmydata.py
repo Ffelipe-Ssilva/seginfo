@@ -1,38 +1,36 @@
-import mysql.connector as sqlcon
+from models import conexao
 import getpass
+from bson.objectid import ObjectId
 
-conexao = sqlcon.connect(
-    host='localhost',
-    user='root',
-    password='1234',
-    database='bdinfosecurity',
-)
+
+conexao = conexao()
+client = conexao.get_client()
+db = client["seginfo"]
+
+colecao = db['user']
 
 try:
-    name= input("Enter username:")
-    passw= getpass.getpass(prompt="Enter password:")
-    validate = conexao.cursor()
-    comando=f"select user.userid from bdinfosecurity.user where user.username = '{name}' and user.userpassword = '{passw}'"
-    validate.execute(comando)
-    queryresult=validate.fetchone()
-    for row in queryresult:
-        idsession=row
+    name = input("Enter username:")
+    passw = getpass.getpass(prompt="Enter password:")
 
-    if idsession != None:
+    # Consulta o usuário no banco de dados
+    user = db.user.find_one({
+        'username': name,
+        'userpassword': passw
+    })
+
+    if user and user['userrole'] == 'admin':
+        idsession = user['_id']
         validation = "ok"
         print("login concluido")
     else:
         validation = None
         print("acesso negado")
-    validate.close()
 except:
     validation = None
     print("acesso negado")
 
-if(validation=="ok"):
-    cursor = conexao.cursor()
-    comando=f"select * from bdinfosecurity.user where user.userid = {idsession}"
-    cursor.execute(comando)
-    resultado=cursor.fetchall()
+if validation == "ok":
+    # Consulta as informações do usuário utilizando o ID da sessão
+    resultado = db.user.find_one({'_id': idsession})
     print(resultado)
-    cursor.close()

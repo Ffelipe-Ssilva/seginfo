@@ -1,113 +1,120 @@
 import pymongo
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 
 # Criar a conexão com o banco de dados
-client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client["seginfo"]
+class conexao:
+    def get_client(self):
+        return self.client
+        
+    def __init__(self):
+        self.name = "conexao"
+        uri = "mongodb+srv://m001-student:m001-student@cluster0.3lcb5rw.mongodb.net/?retryWrites=true&w=majority"
+        # self.client = pymongo.MongoClient("mongodb://localhost:27017/")
+        self.client = MongoClient(uri, server_api=ServerApi('1'))
+        self.client = MongoClient("mongodb+srv://m001-student:m001-student@cluster0.3lcb5rw.mongodb.net/test")
+        self.db = self.client["seginfo"]
+        try:
+            client.admin.command('ping')
+            print("Pinged your deployment. You successfully connected to MongoDB!")
+        except Exception as e:
+            print(e)
+        
+        # self.users = self.db["user"]
+        # self.user_data = [
+        #         {"username": "Alice", "usermail": "alice@example.com", "userpassword": "password123", "userrole": "admin"},
+        #         {"username": "Bob", "usermail": "bob@example.com", "userpassword": "password123", "userrole": "user"},
+        #         {"username": "Charlie", "usermail": "charlie@example.com", "userpassword": "password123", "userrole": "user"},
+        #         {"username": "Dave", "usermail": "dave@example.com", "userpassword": "password123", "userrole": "user"},
+        #         {"username": "Eve", "usermail": "eve@example.com", "userpassword": "password123", "userrole": "user"}
+        # ]
+        # self.users.insert_many(self.user_data)
 
-# # Criar a coleção accesslog
-# accesslog = db["accesslog"]
+        # # criando a coleção sell e inserindo dados de exemplo
+        # self.sells = self.db["sell"]
+        # self.sell_data = [
+        #         {"sellprod": "celular", "sellprice": 1000, "user_id":  self.users.find_one({"username": "Alice"})["_id"]},
+        #         {"sellprod": "notebook", "sellprice": 3000, "user_id":  self.users.find_one({"username": "Bob"})["_id"]},
+        #         {"sellprod": "tablet", "sellprice": 1500, "user_id":  self.users.find_one({"username": "Charlie"})["_id"]},
+        #         {"sellprod": "smartwatch", "sellprice": 800, "user_id":  self.users.find_one({"username": "Alice"})["_id"]},
+        #         {"sellprod": "televisão", "sellprice": 4000, "user_id":  self.users.find_one({"username": "Eve"})["_id"]},
+        #         {"sellprod": "fones de ouvido", "sellprice": 100, "user_id":  self.users.find_one({"username": "Dave"})["_id"]},
+        #         {"sellprod": "caixa de som", "sellprice": 200, "user_id":  self.users.find_one({"username": "Bob"})["_id"]},
+        #         {"sellprod": "computador", "sellprice": 5000, "user_id":  self.users.find_one({"username": "Charlie"})["_id"]},
+        #         {"sellprod": "impressora", "sellprice": 700, "user_id":  self.users.find_one({"username": "Eve"})["_id"]},
+        #         {"sellprod": "mouse", "sellprice": 50, "user_id":  self.users.find_one({"username": "Dave"})["_id"]}
+        # ]
+        # self.sells.insert_many(self.sell_data)
+
+
+# class criarBancos:
+# Criar a coleção accesslog
+# accesslog = self.db["accesslog"]
 # accesslog.create_index([("idaccesslog", pymongo.ASCENDING)], unique=True)
 # accesslog.create_index([("iduseracces", pymongo.ASCENDING)])
 # accesslog.create_index([("context", pymongo.ASCENDING)])
 # accesslog.create_index([("iduseranalysed", pymongo.ASCENDING)])
-
-# # Criar a coleção sell
-# sell = db["sell"]
-# sell.create_index([("idsell", pymongo.ASCENDING)], unique=True)
-# sell.create_index([("sellprod", pymongo.ASCENDING)])
-# sell.create_index([("sellprice", pymongo.ASCENDING)])
-
-
-# # Criar coleção "user"
-user = db["user"]
-
-# # Criar índices
-# user.create_index("userid", unique=True)
-# user.create_index("usermail", unique=True)
 
 # accesslog.insert_many([
 #     {"idaccesslog": 1, "iduseracces": 15, "context": "cobrança por email", "iduseranalysed": 0},
 #     {"idaccesslog": 2, "iduseracces": 15, "context": "cobrança por email", "iduseranalysed": None}
 # ])
 
-# sell.insert_many([
-#     {"idsell": 1, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 2, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 3, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 4, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 5, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 6, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 7, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 8, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 9, "sellprod": "{produto}", "sellprice": 1000},
-#     {"idsell": 10, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 11, "sellprod": "celular", "sellprice": 1000},
-#     {"idsell": 12, "sellprod": "pedra", "sellprice": 1000}
-# ])
+
+        # documents1 = user.find()
 
 
-# # Inserir documentos
-# user.insert_many([
-#     {"userid": 1, "username": "Alice", "usermail": "alice@example.com", "userpassword": "password123", "userrole": "admin"},
-#     {"userid": 2, "username": "Bob", "usermail": "bob@example.com", "userpassword": "password456", "userrole": "user"},
-#     {"userid": 3, "username": "Charlie", "usermail": "charlie@example.com", "userpassword": "password789", "userrole": "user"}
-# ])
+# # Iterando sobre todos os documentos e inserindo na coleção de destino
+# for doc in documents1:
+#     # mongo_collection_dest.insert_one(doc)
+#     print('Aqui temos o banco de dados de origem ')
+#     print(doc)
 
-documents1 = user.find()
+# # Caso queira criar o banco 2, descomentar código abaixo
+# client = pymongo.MongoClient("mongodb://localhost:27017/")
+# db = client["seginfo2"]
 
-
-# Iterando sobre todos os documentos e inserindo na coleção de destino
-for doc in documents1:
-    # mongo_collection_dest.insert_one(doc)
-    print('Aqui temos o banco de dados de origem ')
-    print(doc)
-
-# Caso queira criar o banco 2, descomentar código abaixo
-client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client["seginfo2"]
-
-# Criar a coleção sell
-sell2 = db["sell2"]
-sell2.create_index([("idsell", pymongo.ASCENDING)], unique=True)
-sell2.create_index([("sellprod", pymongo.ASCENDING)])
-sell2.create_index([("sellsize", pymongo.ASCENDING)])
+# # Criar a coleção sell
+# sell2 = self.db["sell2"]
+# sell2.create_index([("sellprod", pymongo.ASCENDING)])
+# sell2.create_index([("sellsize", pymongo.ASCENDING)])
 
 
-# Criar coleção "user"
-user2 = db["user2"]
+# # Criar coleção "user"
+# user2 = self.db["user2"]
 
-# Criar índices
-user2.create_index("userid", unique=True)
-user2.create_index("usermail", unique=True)
-user2.create_index("userloc", unique=True)
-user2.create_index("userage", unique=True)
+# # Criar índices
+# user2.create_index("usermail", unique=True)
+# user2.create_index("userloc", unique=True)
+# user2.create_index("userage", unique=True)
 
 
-# sell2.insert_many([
-#     {"idsell": 1, "sellprod": "celular", "sellsize": 1600},
-#     {"idsell": 2, "sellprod": "computador", "sellsize": 100},
-#     {"idsell": 3, "sellprod": "mouse", "sellsize": 230},
-#     {"idsell": 4, "sellprod": "teclado", "sellsize": 500},
-#     {"idsell": 5, "sellprod": "fone", "sellsize": 10},
-# ])
+# # sell2.insert_many([
+# #     {   "sellprod": "celular", "sellsize": 1600},
+# #     {   "sellprod": "computador", "sellsize": 100},
+# #     {   "sellprod": "mouse", "sellsize": 230},
+# #     {   "sellprod": "teclado", "sellsize": 500},
+# #     {   "sellprod": "fone", "sellsize": 10},
+# # ])
 
-# # Insere um usuário
-# user2.insert_one({"userid": 1, "usermail": "joao@example.com", "userloc": "São Paulo", "userage": 25})
+# # # Insere um usuário
+# # user2.insert_one({"usermail": "joao@example.com", "userloc": "São Paulo", "userage": 25})
 
-# # Insere outro usuário
-# user2.insert_one({"userid": 2, "usermail": "maria@example.com", "userloc": "Rio de Janeiro", "userage": 30})
+# # # Insere outro usuário
+# # user2.insert_one({ "usermail": "maria@example.com", "userloc": "Rio de Janeiro", "userage": 30})
 
-# # Insere mais um usuário
-# user2.insert_one({"userid": 3, "usermail": "carlos@example.com", "userloc": "Belo Horizonte", "userage": 20})
+# # # Insere mais um usuário
+# # user2.insert_one({ "usermail": "carlos@example.com", "userloc": "Belo Horizonte", "userage": 20})
 
-# # Insere mais um usuário
-# user2.insert_one({"userid": 4, "usermail": "ana@example.com", "userloc": "Curitiba", "userage": 35})
+# # # Insere mais um usuário
+# # user2.insert_one({ "usermail": "ana@example.com", "userloc": "Curitiba", "userage": 35})
 
-# # Insere mais um usuário
-# user2.insert_one({"userid": 5, "usermail": "pedro@example.com", "userloc": "Porto Alegre", "userage": 40})
+# # # Insere mais um usuário
+# # user2.insert_one({ "usermail": "pedro@example.com", "userloc": "Porto Alegre", "userage": 40})
 
-documents2 = user2.find()
+# documents2 = user2.find()
 
-for doc in documents2:
-    print('Aqui temos o banco de dados de destino ')
-    print(doc)
+# for doc in documents2:
+#     print('Aqui temos o banco de dados de destino ')
+#     print(doc)
+        

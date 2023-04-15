@@ -1,52 +1,33 @@
-import mysql.connector as sqlcon
+from models import conexao
 import getpass
-
-conexao = sqlcon.connect(
-    host='localhost',
-    user='root',
-    password='1234',
-    database='bdinfosecurity',
-)
+from bson.objectid import ObjectId
 
 
-confirm= input("Tem certeza que deseja excluir esse dado? ele não poderá ser restaurado... ")
-if(confirm=="sim"):
+conexao = conexao()
+client = conexao.get_client()
+db = client["seginfo"]
+
+colecao = db['user']
+
+confirm = input("Tem certeza que deseja excluir esse dado? ele não poderá ser restaurado... ")
+if confirm == "sim":
     try:
-        name= input("Enter username:")
-        passw=getpass.getpass(prompt="Enter password:")
-        validate = conexao.cursor()
-        comando=f"select * from bdinfosecurity.user where user.username = '{name}' and user.userpassword = '{passw}' and user.userrole='admin'"
-        validate.execute(comando)
-        resultado=validate.fetchall()
+        name = input("Enter username:")
+        passw = getpass.getpass(prompt="Enter password:")
+        user = colecao.find_one({'username': name, 'userpassword': passw, 'userrole': 'admin'})
         
-        for row in resultado:
-            authorize=row
-        if(authorize):
-            idu = input("ID do usuario a ser excluido:")    
-            check = conexao.cursor()
-            existingquery=f"select * from bdinfosecurity.user where user.userid = {idu}"
-            check.execute(existingquery)
-            finduser=check.fetchall()
-            for row in finduser:
-                authorize=row
-            if(authorize):
-                deleter = conexao.cursor()
-                deletequery=f"delete from bdinfosecurity.user where user.userid = {idu}"
-                deleter.execute(deletequery)
-                conexao.commit()
-                resultado=deleter.fetchall()
-                deleter.close()
-                conexao.close()
+        if user:
+            idu = input("ID do usuario a ser excluido:")
+            result = colecao.delete_one({'_id': ObjectId(idu)})
+            
+            if result.deleted_count == 1:
                 print("dado excluido")
-                
             else:
                 print("usuário não encontrado")
-            check.close() 
         else:
             print("acesso negado")
-        validate.close()
-    except:
-        validation = None
-        print("acesso negado")
+    except Exception as e:
+        print(f"Erro ao excluir o usuário: {e}")
 else:
     print("processo encerrado")
+

@@ -1,46 +1,43 @@
-import mysql.connector as sqlcon
-import getpass
+from models import conexao
+import pymongo
+from getpass import getpass
+from bson.objectid import ObjectId
 
-conexao = sqlcon.connect(
-    host='localhost',
-    user='root',
-    password='1234',
-    database='bdinfosecurity',
-)
+
+conexao = conexao()
+client = conexao.get_client()
+db = client["seginfo"]
+
+import pymongo
+from pymongo import MongoClient
+import getpass
 
 try:
     name= input("Enter username:")
     passw= getpass.getpass(prompt="Enter password:")
-    validate = conexao.cursor()
-    comando=f"select user.userid from bdinfosecurity.user where user.username = '{name}' and user.userpassword = '{passw}' and user.userrole='admin'"
 
-    validate.execute(comando)
-    queryresult=validate.fetchone()
-    for row in queryresult:
-        idsession=row
+    # Faz a consulta no banco de dados
+    user = db.user.find_one({'username': name, 'userpassword': passw, 'userrole': 'admin'})
 
-    if idsession != None:
+    if user:
+        idsession = str(user['_id'])
         validation = "ok"
         print("login concluido")
     else:
         validation = None
         print("acesso negado")
-    validate.close()
-except:
+except Exception as e:
     validation = None
-    print("acesso negado")
+    print(f"Erro ao realizar o login: {e}")
 
-if(validation=="ok"):
-    cursor = conexao.cursor()
-    comando='select user.usermail from bdinfosecurity.user'
-    cursor.execute(comando)
-    resultado=cursor.fetchall()
+if validation == "ok":
+    # Faz a consulta dos e-mails dos usuários
+    users = db.user.find({}, {'usermail': 1})
+    resultado = [u['usermail'] for u in users]
+
     print("Emails de usuarios devedores. Dados devem ser utilizados apenas para cobrança")
     print(resultado)
-    cursor.close()
 
-    log = conexao.cursor()
-    comando=f"insert into bdinfosecurity.accesslog (iduseracces, context) values ({idsession}, 'cobrança por email')"
-    log.execute(comando)
-    conexao.commit()
-    log.close()
+    # Registra a ação no log
+    db.accesslog.insert_one({'iduseracces': idsession, 'context': 'cobrança por email'})
+    print("Ação registrada no log")

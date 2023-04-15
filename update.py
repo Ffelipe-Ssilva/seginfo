@@ -1,22 +1,19 @@
-import mysql.connector as sqlcon
-import getpass
+from models import conexao
+import pymongo
+from getpass import getpass
+from bson.objectid import ObjectId
 
-conexao = sqlcon.connect(
-    host='localhost',
-    user='root',
-    password='1234',
-    database='bdinfosecurity',
-)
+
+conexao = conexao()
+client = conexao.get_client()
+db = client["seginfo"]
 
 try:
     name= input("Enter username:")
-    passw= getpass.getpass(prompt="Enter password:")
-    validate = conexao.cursor()
-    comando=f"select user.userid from bdinfosecurity.user where user.username = '{name}' and user.userpassword = '{passw}'"
-    validate.execute(comando)
-    queryresult=validate.fetchone()
-    for row in queryresult:
-        idsession=row
+    passw= getpass(prompt="Enter password:")
+    user_collection = db["user"]
+    user = user_collection.find_one({"username": name, "userpassword": passw})
+    idsession = user["_id"]
 
     if idsession != None:
         validation = "ok"
@@ -24,21 +21,13 @@ try:
     else:
         validation = None
         print("acesso negado")
-    validate.close()
-except:
+except Exception as e:
     validation = None
-    print("acesso negado")
+    print(f"Erro ao logar o usuário: {e}")
 
 if(validation=="ok"):
-    cursor = conexao.cursor()
+    user_collection = db["user"]
     name= input("Enter new username:")
     mail= input("Enter new email:")
-    comando=f"update bdinfosecurity.user set username = '{name}', usermail = '{mail}' where userid = {idsession}"
-    cursor.execute(comando)
-    conexao.commit()
-    resultado=cursor.fetchall()
-    cursor.close()
-    conexao.close()
-
-
-
+    user_collection.update_one({"_id": idsession}, {"$set": {"username": name, "usermail": mail}})
+    print("Update concluido")

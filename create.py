@@ -1,14 +1,11 @@
-import mysql.connector as sqlcon
 import getpass
+from models import conexao
 
+conexao = conexao()
+client = conexao.get_client()
+db = client["seginfo"]
 
-conexao = sqlcon.connect(
-    host='localhost',
-    user='root',
-    password='1234',
-    database='bdinfosecurity',
-)
-cursor = conexao.cursor()
+colecao = db['user']
 name= input("Enter username:")
 mail= input("Enter email:")
 passw= getpass.getpass(prompt="Enter password:")
@@ -40,12 +37,14 @@ while consent !="OK":
 #        ads= input("")
 if consent == "OK":
         if sensible=="sim":
-            comando=f"insert into bdinfosecurity.user (username, usermail, userpassword, userrole, usergender, userethnicity, userage) values ('{name}', '{mail}', '{passw}', 'user', '{gen}', '{eth}', {age})"
+            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user','usergender': gen, 'userethnicity':eth, 'userage': age}
+            result = colecao.insert_one(dados)
+            print(result.inserted_id)
         elif sensible=="não":
-             comando=f"insert into bdinfosecurity.user (username, usermail, userpassword, userrole) values ('{name}', '{mail}', '{passw}', 'user')"    
+            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': user}
+            result = colecao.insert_one(dados)
+            print(result.inserted_id)
 
-        cursor.execute(comando)
-        conexao.commit()
-        resultado=cursor.fetchall()
-        cursor.close()
-        conexao.close()
+usuarios = colecao.find()
+for usuario in usuarios:
+    print(usuario)
