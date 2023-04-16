@@ -38,7 +38,7 @@ if validation == "ok":
     elif private=="no":
         print("anuncio: ESPECIFICO!!!")
         
-
+ 
     print("Escolha um produto: ")
     print("Celular - R$1000,00")
     print("Notebook - R$3000,00")
