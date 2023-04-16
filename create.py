@@ -41,7 +41,7 @@ if consent == "OK":
             result = colecao.insert_one(dados)
             print(result.inserted_id)
         elif sensible=="não":
-            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': user}
+            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user'}
             result = colecao.insert_one(dados)
             print(result.inserted_id)
 
