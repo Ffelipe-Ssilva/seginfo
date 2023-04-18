@@ -22,6 +22,7 @@ try:
 
     if user:
         idsession = str(user['_id'])
+        private=user['useradds']
         validation = "ok"
         print("login concluido")
     else:
@@ -32,11 +33,10 @@ except Exception as e:
     print(f"Erro ao realizar o login: {e}")
 
 if validation == "ok":
-    private="no"
-    if private=="yes":
+    if private:
+        print("anuncio: ESPECÍFICO!!!")
+    else:
         print("anuncio: ALEATÓRIO!!!")
-    elif private=="no":
-        print("anuncio: ESPECIFICO!!!")
         
  
     print("Escolha um produto: ")
@@ -76,4 +76,11 @@ if validation == "ok":
     dados = {'sellprod': prodesc, 'sellprice' : price, 'userpassword': idsession}
     result = colecao.insert_one(dados)
     print(result.inserted_id)
-    
+
+
+ 
+    if private:
+
+        newvalues = { "$set": { "userpref": prodesc } }
+
+        colecao.update_one(idsession, newvalues)

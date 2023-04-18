@@ -20,6 +20,12 @@ if sensible=="sim":
 elif sensible=="não":
     print("Okay, não utilizaremos informações sensíveis")
 
+ads= input("Deseja utilizar informações das suas comprar para personalizar seus anuncios? (Isso não influenciara na aparição de anúncios, apenas seu conteúdo)")
+if ads=="sim":
+    userads=True
+else:
+    userads=False
+
 consent= input("By typing OK button, you are creating an account, and agree to Terms of Service and Privacy Policy:")
 while consent !="OK":
     if consent=="termos":
@@ -37,11 +43,11 @@ while consent !="OK":
 #        ads= input("")
 if consent == "OK":
         if sensible=="sim":
-            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user','usergender': gen, 'userethnicity':eth, 'userage': age}
+            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user','usergender': gen, 'userethnicity':eth, 'userage': age, 'useradds': userads}
             result = colecao.insert_one(dados)
             print(result.inserted_id)
         elif sensible=="não":
-            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user'}
+            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user', 'useradds': userads}
             result = colecao.insert_one(dados)
             print(result.inserted_id)
 
