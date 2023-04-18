@@ -43,11 +43,11 @@ while consent !="OK":
 #        ads= input("")
 if consent == "OK":
         if sensible=="sim":
-            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user','usergender': gen, 'userethnicity':eth, 'userage': age, 'useradds': userads}
+            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user','usergender': gen, 'userethnicity':eth, 'userage': age, 'useradds': userads, 'userpref': ''}
             result = colecao.insert_one(dados)
             print(result.inserted_id)
         elif sensible=="não":
-            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user', 'useradds': userads}
+            dados = {'username': name, 'usermail' : mail, 'userpassword': passw, 'userrole': 'user', 'useradds': userads, 'userpref': ''}
             result = colecao.insert_one(dados)
             print(result.inserted_id)
 

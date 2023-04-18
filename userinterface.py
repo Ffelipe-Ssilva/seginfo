@@ -19,10 +19,10 @@ try:
 
     # Faz a consulta no banco de dados
     user = db.user.find_one({'username': name, 'userpassword': passw})
-
-    if user:
+    if user !='':
         idsession = str(user['_id'])
         private=user['useradds']
+        pref=user['userpref']
         validation = "ok"
         print("login concluido")
     else:
@@ -35,6 +35,7 @@ except Exception as e:
 if validation == "ok":
     if private:
         print("anuncio: ESPECÍFICO!!!")
+        print(f"oferta de ["+pref+"]")
     else:
         print("anuncio: ALEATÓRIO!!!")
         
@@ -75,12 +76,11 @@ if validation == "ok":
 
     dados = {'sellprod': prodesc, 'sellprice' : price, 'userpassword': idsession}
     result = colecao.insert_one(dados)
-    print(result.inserted_id)
 
 
  
     if private:
-
-        newvalues = { "$set": { "userpref": prodesc } }
-
-        colecao.update_one(idsession, newvalues)
+        personalizar = db['user']
+        myquery = {"_id": ObjectId(idsession)}
+        newvalues = {"$set": {"userpref": str(prodesc)}}
+        result = personalizar.find_one_and_update(myquery, newvalues)
