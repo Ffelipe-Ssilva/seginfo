@@ -32,10 +32,10 @@ except:
 
 if(validation=="ok"):
     cursor = conexao.cursor()
-    comando='select user.userethnicity,count(user.userethnicity) as etnia from bdinfosecurity.user where user.userethnicity is not null group by user.userethnicity'
+    comando='select user.userethnicity,count(user.userethnicity) as contador from bdinfosecurity.user where user.userethnicity is not null group by user.userethnicity'
     cursor.execute(comando)
     resultado=cursor.fetchall()
-    print("Contagem de atnias dos usuários")
+    print("Contagem de etnias dos usuários")
     print(resultado)
     cursor.close()
 

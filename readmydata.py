@@ -19,7 +19,7 @@ try:
         'userpassword': passw
     })
 
-    if user and user['userrole'] == 'admin':
+    if user:
         idsession = user['_id']
         validation = "ok"
         print("login concluido")
