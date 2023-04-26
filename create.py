@@ -17,6 +17,7 @@ passw= getpass.getpass(prompt="Enter password:")
 termos = db.terms.find_one({},sort=[( '_id', pymongo.DESCENDING )])
 conteudotermo=str(termos['conditions'])
 versiontermo=str(termos['version'])
+print(versiontermo)
 idtermo=str(termos['_id'])
 
 print("Termos de politica e privacidade")

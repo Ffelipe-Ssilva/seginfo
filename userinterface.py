@@ -3,11 +3,14 @@ import pymongo
 from getpass import getpass
 from bson.objectid import ObjectId
 
+from datetime import datetime
+
 
 conexao = conexao()
 client = conexao.get_client()
 db = client["seginfo"]
 colecao = db['sell']
+acceptance= db['acceptance']
 
 import pymongo
 from pymongo import MongoClient
@@ -20,9 +23,10 @@ try:
     # Faz a consulta no banco de dados
     user = db.user.find_one({'username': name, 'userpassword': passw})
     if user !='':
-        idsession = str(user['_id'])
+        idsession = user['_id']
         private=user['useradds']
         pref=user['userpref']
+        name=user['username']
         validation = "ok"
         print("login concluido")
     else:
@@ -33,6 +37,28 @@ except Exception as e:
     print(f"Erro ao realizar o login: {e}")
 
 if validation == "ok":
+
+
+    acceptquery = db.acceptance.find_one({'userid': idsession},sort=[("_id", pymongo.DESCENDING)])
+    latestaccept=int(acceptquery['version'])
+
+    termos = db.terms.find_one({},sort=[( '_id', pymongo.DESCENDING )])
+    versiontermo=int(termos['version'])
+
+    if versiontermo>latestaccept:
+        termos = db.terms.find_one({},sort=[( '_id', pymongo.DESCENDING )])
+        conteudotermo=str(termos['conditions'])
+        versiontermo=str(termos['version'])
+        idtermo=str(termos['_id'])
+
+        print("Há uma nova versão dos temos de privacidade")
+        print(conteudotermo)
+        consent=""
+        while consent !="OK":
+            consent= input("By typing OK button, you are creating an account, and agree to Terms of Service and Privacy Policy:")
+        accept = {'userid': idsession, 'termid' : idtermo, 'user': name, 'version': versiontermo, 'date': datetime.now()}
+        result = acceptance.insert_one(accept)
+
     if private:
         print("anuncio: ESPECÍFICO!!!")
         print(f"oferta de ["+pref+"]")
