@@ -55,8 +55,32 @@ if validation == "ok":
         print(conteudotermo)
         consent=""
         while consent !="OK":
+            checkmail=input("Deseja receber emails?")
+            if checkmail == "sim":
+                acceptemail=True
+            if checkmail == "nao":
+                acceptemail=False
+
+            checksensible=input("Deseja user dados sensiveis?")
+            if checksensible == "sim":
+                acceptsensible=True
+            if checksensible == "nao":
+                acceptsensible=False
+
+            checkads=input("Deseja customizar anuncios?")
+            if checkads == "sim":
+                acceptads=True
+            if checkads == "nao":
+                acceptads=False
+
+            #checkwpp=input("Deseja receber whatsapp?")
+            #if checkwpp == "sim":
+            #    acceptwpp=True
+            #if checkwpp == "nao":
+            #    acceptwpp=False
+
             consent= input("By typing OK button, you are creating an account, and agree to Terms of Service and Privacy Policy:")
-        accept = {'userid': idsession, 'termid' : idtermo, 'user': name, 'version': versiontermo, 'date': datetime.now()}
+        accept = {'userid': idsession, 'termid' : idtermo, 'user': name, 'version': versiontermo, 'date': datetime.now(),'acceptadds':acceptads,'acceptemail':acceptemail,'acceptsensible':acceptsensible}
         result = acceptance.insert_one(accept)
 
     if private:

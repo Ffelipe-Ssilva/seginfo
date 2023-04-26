@@ -9,3 +9,9 @@ adicionar descrição apropriada dos termos e privacidade
 só deletar usuario se ele existir
 LIMPAR O CODIGO
 descobrir se é possivel restaurar dados deletados e impedir isso
+
+
+
+parametrizar campos
+sub collection
+array
