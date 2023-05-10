@@ -9,6 +9,7 @@ db = client["seginfo"]
 colecao = db['user']
 terms = db['terms']
 aceite = db['acceptance']
+consentlist=[]
 name= input("Enter username:")
 mail= input("Enter email:")
 passw= getpass.getpass(prompt="Enter password:")
@@ -32,6 +33,7 @@ while consent !="OK":
         gen= input("Enter gender:")
         age= input("Enter age:")
         acceptsensible=True
+        consentlist.append("Uso de dados sensíveis")
     else:
         print("Okay, não utilizaremos informações sensíveis")
         acceptsensible=False
@@ -40,6 +42,7 @@ while consent !="OK":
     if ads=="sim":
         userads=True
         acceptads=True
+        consentlist.append("Personalização de anúncios")
     else:
         userads=False
         acceptads=False
@@ -47,6 +50,7 @@ while consent !="OK":
     checkmail=input("Deseja receber emails?")
     if checkmail == "sim":
         acceptemail=True
+        consentlist.append("Envio de Emails")
     if checkmail == "nao":
         acceptemail=False
 
@@ -96,6 +100,6 @@ print(user)
 if user !='':
     useratual = user['_id']
 #registrar aceite do usuario
-acceptance = {'userid': useratual, 'termid' : idtermo, 'user': name, 'version': versiontermo, 'date': datetime.now(),'acceptadds':acceptads,'acceptemail':acceptemail,'acceptsensible':acceptsensible}
+acceptance = {'userid': useratual, 'termid' : idtermo, 'user': name, 'version': versiontermo, 'date': datetime.now(),'acceptarray':consentlist}
 #,'acceptwpp': acceptwpp
 result = aceite.insert_one(acceptance)

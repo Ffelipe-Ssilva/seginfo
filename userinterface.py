@@ -50,7 +50,7 @@ if validation == "ok":
         conteudotermo=str(termos['conditions'])
         versiontermo=str(termos['version'])
         idtermo=str(termos['_id'])
-
+        consentlist=[]
         print("Há uma nova versão dos temos de privacidade")
         print(conteudotermo)
         consent=""
@@ -58,18 +58,21 @@ if validation == "ok":
             checkmail=input("Deseja receber emails?")
             if checkmail == "sim":
                 acceptemail=True
+                consentlist.append("Envio de Emails")
             if checkmail == "nao":
                 acceptemail=False
 
             checksensible=input("Deseja user dados sensiveis?")
             if checksensible == "sim":
                 acceptsensible=True
+                consentlist.append("Uso de dados sensíveis")
             if checksensible == "nao":
                 acceptsensible=False
 
             checkads=input("Deseja customizar anuncios?")
             if checkads == "sim":
                 acceptads=True
+                consentlist.append("Personalização de anúncios")
             if checkads == "nao":
                 acceptads=False
 
@@ -80,7 +83,7 @@ if validation == "ok":
             #    acceptwpp=False
 
             consent= input("By typing OK button, you are creating an account, and agree to Terms of Service and Privacy Policy:")
-        accept = {'userid': idsession, 'termid' : idtermo, 'user': name, 'version': versiontermo, 'date': datetime.now(),'acceptadds':acceptads,'acceptemail':acceptemail,'acceptsensible':acceptsensible}
+        accept = {'userid': idsession, 'termid' : idtermo, 'user': name, 'version': versiontermo, 'date': datetime.now(),'acceptarray':consentlist}
         result = acceptance.insert_one(accept)
 
     if private:
