@@ -3,70 +3,38 @@ import pymongo
 from getpass import getpass
 from bson.objectid import ObjectId
 from datetime import datetime
-
+import jwt
+from bson import json_util, ObjectId
+import json
 
 conexao = conexao()
 client = conexao.get_client()
 db = client["seginfo"]
 terms = db['terms']
 aceite = db['acceptance']
+user_collection = db["user"]
 
-try:
-    name= input("Enter username:")
-    passw= getpass(prompt="Enter password:")
-    user_collection = db["user"]
-    user = user_collection.find_one({"username": name, "userpassword": passw})
-    idsession = user["_id"]
+def updateUser(request,token):
+    try:
+        decodedToken = jwt.decode(token, 'secret', algorithms=["HS256"])
+    except():
+        return 'Unauthorized'
+    termos = db.terms.find_one({}, sort=[('_id', pymongo.DESCENDING)])
+    versiontermo = str(termos['version'])
+    idtermo = str(termos['_id'])
+    consentlist= []
 
-    termos = db.terms.find_one({},sort=[( '_id', pymongo.DESCENDING )])
-    conteudotermo=str(termos['conditions'])
-    versiontermo=str(termos['version'])
-    print(versiontermo)
-    idtermo=str(termos['_id'])
-
-    if idsession != None:
-        validation = "ok"
-        print("login concluido")
-    else:
-        validation = None
-        print("acesso negado")
-except Exception as e:
-    validation = None
-    print(f"Erro ao logar o usuário: {e}")
-
-if(validation=="ok"):
-    user_collection = db["user"]
-    consentlist=[]
-
-    checkmail=input("Deseja receber emails?")
-    if checkmail == "sim":
-        acceptemail=True
-        consentlist.append("Envio de Emails")
-        print("Envio de Emails ON")
-    else:
-        acceptemail=False
-        print("Envio de Emails OFF")
-
-    checksensible=input("Deseja user dados sensiveis?")
-    if checksensible == "sim":
-        acceptsensible=True
+    if request.get('sensible'):
         consentlist.append("Uso de dados sensíveis")
-        print("Uso de dados sensíveis ON")
-    else:
-        acceptsensible=False
-        print("Uso de dados sensíveis OFF")
-
-    checkads=input("Deseja customizar anuncios?")
-    if checkads == "sim":
-        acceptads=True
+    if request.get('ads'):
         consentlist.append("Personalização de anúncios")
-        print("Personalização de anúncios ON")
-    else:
-        acceptads=False
-        print("Personalização de anúncios OFF")
+    if request.get('checkmail'):
+        consentlist.append("Envio de Emails")
+    if request.get('customAds'):
+        consentlist.append("Personalização de anúncios")
 
-    consent= input("By typing OK button, you are creating an account, and agree to Terms of Service and Privacy Policy:")
-    accept = {'userid': idsession, 'termid' : idtermo, 'user': name, 'version': versiontermo, 'date': datetime.now(),'acceptarray':consentlist}
-    result = aceite.insert_one(accept)
-    #user_collection.update_one({"_id": idsession}, {"$set": {"username": name, "usermail": mail}})
-    print("Update concluido")
+    accept = {'userid': ObjectId(decodedToken['_id']['$oid']), 'termid': idtermo, 'user': request.get('name'), 'version': versiontermo, 'date': datetime.now(),'acceptarray': consentlist}
+
+    result = aceite.insert_one(accept).inserted_id
+    createdUser = aceite.find_one({"_id": ObjectId(result)})
+    return json.loads(json_util.dumps(createdUser))
