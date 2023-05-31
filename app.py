@@ -5,7 +5,7 @@ import re
 from create import createUser
 from login import loginUser
 from delete import deleteUser
-from readmydata import findUser
+from readmydata import findUser, importUser
 from update import updateUser
 from readcobranca import mailing
 from checkLatestTerm import checkLatestTerm
@@ -51,6 +51,10 @@ def mail():
 @app.route('/user/login', methods=['POST'])
 def userLogin():
     return loginUser(request.json)
+
+@app.route('/importuser', methods=['POST'])
+def userImport():
+    return importUser(request.json)
 
 @app.route('/user/<userId>', methods=['DELETE'])
 def delete(userId=None):
