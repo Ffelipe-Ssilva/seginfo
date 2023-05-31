@@ -19,6 +19,7 @@
 scp C:\Caminho\Arquivo.json [usuario de destino]@[ip do servidor]:/[caminho destino no servidor]
 ```
 4 - Após envio do arquivo para o servidor, é de reponsabilidade desse cliente apagar a cópia local dos dados portados (JSON com dados do usuário) e remover usuário do banco de dados.
+
 --------------
 
 #### Cliente que está recebendo dados
