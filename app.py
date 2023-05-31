@@ -8,6 +8,10 @@ from delete import deleteUser
 from readmydata import findUser
 from update import updateUser
 from readcobranca import mailing
+from checkLatestTerm import checkLatestTerm
+from signTerm import signTerm
+from getAds import getAds
+from buyProduct import buyProduct
 
 app = Flask(__name__)
 app.secret_key = 'app_secret'
@@ -23,6 +27,22 @@ def updateCreate():
 @app.route('/user', methods=['GET'])
 def find():
     return findUser(request.headers.get('Authorization'))
+
+@app.route('/checkTerm', methods=['GET'])
+def checkTerm():
+    return checkLatestTerm(request.headers.get('Authorization'))
+
+@app.route('/signTerm', methods=['POST'])
+def signLatestTerm():
+    return signTerm(request.json, request.headers.get('Authorization'))
+
+@app.route('/buyProduct', methods=['POST'])
+def sellProduct():
+    return buyProduct(request.json, request.headers.get('Authorization'))
+
+@app.route('/ads', methods=['GET'])
+def findAds():
+    return getAds(request.headers.get('Authorization'))
 
 @app.route('/mail', methods=['GET'])
 def mail():
