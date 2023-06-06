@@ -15,11 +15,11 @@ colecao = db['user']
 
 import json
 
-id = input('Insira o iD do usuario')
+id = input('Insira o iD do usuario: ')
 
 foundUser = colecao.find_one({"_id": ObjectId(id)})
 
 json_object = json.dumps(foundUser, default=json_util.default)
 
-with open("sample.json", "w") as outfile:
+with open("./userData/userData.json", "w") as outfile:
     outfile.write((json_object))

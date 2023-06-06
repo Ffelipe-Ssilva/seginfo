@@ -54,7 +54,7 @@ def userLogin():
 
 @app.route('/importuser', methods=['POST'])
 def userImport():
-    return importUser(request.json)
+    return importUser(request)
 
 @app.route('/user/<userId>', methods=['DELETE'])
 def delete(userId=None):

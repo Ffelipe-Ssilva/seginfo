@@ -2,7 +2,8 @@ from models import conexao
 import pymongo
 from getpass import getpass
 from bson.objectid import ObjectId
-
+import pymongo
+from pymongo import MongoClient
 from datetime import datetime
 
 
@@ -90,20 +91,20 @@ if validation == "ok":
         print("anuncio: ESPECÍFICO!!!")
         print(f"oferta de ["+pref+"]")
     else:
-        print("anuncio: ALEATÓRIO!!!")
+        adslist.append("anuncio: ALEATÓRIO!!!")
         
  
-    print("Escolha um produto: ")
-    print("Celular - R$1000,00")
-    print("Notebook - R$3000,00")
-    print("Tablet - R$1500,00")
-    print("Smartwatch - R$800,00")
-    print("Televisão - R$4000,00")
-    print("Fones de ouvido - R$100,00")
-    print("Caixa de som - R$200,00")
-    print("Computador - R$5000,00")
-    print("Impressora - R$700,00")
-    print("Mouse - R$50,00")
+    adslist.append("Escolha um produto: ")
+    adslist.append("Celular - R$1000,00")
+    adslist.append("Notebook - R$3000,00")
+    adslist.append("Tablet - R$1500,00")
+    adslist.append("Smartwatch - R$800,00")
+    adslist.append("Televisão - R$4000,00")
+    adslist.append("Fones de ouvido - R$100,00")
+    adslist.append("Caixa de som - R$200,00")
+    adslist.append("Computador - R$5000,00")
+    adslist.append("Impressora - R$700,00")
+    adslist.append("Mouse - R$50,00")
     prodesc= input("...")
     price=0
     if prodesc == "celular":

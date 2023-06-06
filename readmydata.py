@@ -21,20 +21,21 @@ def findUser(token):
     return json.loads(json_util.dumps(foundUser))
 
 def importUser(request):
-    # Obter dados do JSON recebido
+    data = json.load(request.files['user'])
+    accept = (request.form.get('accept')).split(',')
+    userParsed = {"_id": ObjectId(data['_id']['$oid'])}
+    if('name' in accept):
+        userParsed = {**userParsed, 'username': data['username']}
+    if('usermail' in accept):
+        userParsed = {**userParsed, 'usermail': data['usermail']}
+    if('userrole' in accept):
+        userParsed = {**userParsed, 'userrole': data['userrole']}
+    if('useradds' in accept):
+        userParsed = {**userParsed, 'useradds': data['useradds']}
+    if('userpref' in accept):
+        userParsed = {**userParsed, 'userpref': data['userpref']}
 
-    # Extrair nome e e-mail do JSON
-    nome = request.get('nome')
-    email = request.get('email')
+    createdUserId = colecao.insert_one(userParsed).inserted_id
+    createdUser = colecao.find_one({"_id": ObjectId(createdUserId)})
 
-    # Verificar se nome e e-mail estão presentes no JSON
-    if nome and email:
-        # Criar documento a ser inserido no banco de dados
-        documento = {'nome': nome, 'email': email}
-
-        # Inserir documento no banco de dados
-        colecao.insert_one(documento)
-
-        return 'Cadastro realizado com sucesso!'
-    else:
-        return 'Erro: nome e/ou e-mail ausentes no JSON.'
+    return {'parsedUser': json.loads(json_util.dumps(createdUser))}
